@@ -100,7 +100,7 @@ namespace AYellowpaper.SerializedCollections.Editor
                 return false;
 
             object[] parameters;
-            var parameterInfos = getDrawerTypeForTypeMethod.GetParameters();
+            var parameterInfos = getDrawerMethod.GetParameters();
             var parametersCount = parameterInfos.Length;
             switch (parametersCount)
             {
