@@ -98,7 +98,27 @@ namespace AYellowpaper.SerializedCollections.Editor
             var getDrawerMethod = attributeUtilityType.GetMethod("GetDrawerTypeForType", BindingFlags.Static | BindingFlags.NonPublic);
             if (getDrawerMethod == null)
                 return false;
-            return getDrawerMethod.Invoke(null, new object[] { type }) != null;
+
+            object[] parameters;
+            var parameterInfos = getDrawerTypeForTypeMethod.GetParameters();
+            var parametersCount = parameterInfos.Length;
+            switch (parametersCount)
+            {
+                default:
+                case 1:
+                    parameters = new object[] { type };
+                    break;
+                //NOTE: Unity 2022.3.23 or above
+                case 2:
+                    parameters = new object[] { type, false };
+                    break;
+                //NOTE: Unity 2023.3.x or above
+                case 3:
+                    parameters = new object[] { type, null, false };
+                    break;
+            }
+
+            return getDrawerMethod.Invoke(null, parameters) != null;
         }
 
         internal static void AddGenericMenuItem(GenericMenu genericMenu, bool isOn, bool isEnabled, GUIContent content, GenericMenu.MenuFunction action)
